@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Memorial Regional da Erva Mate. Explore histórias, território e saberes da erva-mate em Marau, RS." />
+    <title>Memorial Regional da Erva Mate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              forest: { DEFAULT: '#1b583a', deep: '#123d29', soft: '#dcebe2' },
+              mate: { DEFAULT: '#b4892e', soft: '#f3e8cb' },
+              gourd: { DEFAULT: '#71442b', soft: '#eadbd2' }
+            },
+            borderRadius: { brand: '16px' }
+          }
+        }
+      };
+    </script>
+    <link rel="stylesheet" href="tailwind.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body class="ds-page" data-mode="web">
+    <a class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 ds-button ds-button-primary" href="#conteudo">Ir para o conteúdo</a>
+
+    <header class="museum-header border-b" style="border-color: var(--line)">
+      <div class="relative mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 md:px-8">
+        <a href="index.html" aria-label="Memorial Regional da Erva Mate, início">
+          <img src="logo.png" alt="Memorial Regional da Erva Mate, Rota das Salamarias Marau RS" class="h-12 w-auto md:h-14" width="200" height="200" />
+        </a>
+        <nav class="web-only hidden items-center gap-1 md:flex" aria-label="Navegação principal">
+          <a class="ds-nav-link" aria-current="page" href="index.html">Início</a>
+          <a class="ds-nav-link" href="timeline.html">Linha do tempo</a>
+          <a class="ds-nav-link" href="mapa.html">Mapa</a>
+        </nav>
+        <button class="ds-button ds-button-secondary web-only md:hidden" type="button" aria-expanded="false" aria-controls="menu-mobile" data-menu-trigger>Menu</button>
+        <nav id="menu-mobile" class="museum-menu md:hidden" aria-label="Navegação móvel" data-mobile-menu data-open="false">
+          <a class="ds-nav-link" aria-current="page" href="index.html">Início</a>
+          <a class="ds-nav-link" href="timeline.html">Linha do tempo</a>
+          <a class="ds-nav-link" href="mapa.html">Mapa</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="conteudo">
+      <!-- Hero: marca + headline + apoio + CTAs sobre fundo com degradê de opacidade -->
+      <section id="inicio" class="museum-hero" aria-label="Início">
+        <div
+          class="museum-hero-bg"
+          role="img"
+          aria-label="Folhas de erva-mate e cuia tradicional sob luz de floresta"
+        ></div>
+        <div class="museum-hero-content ds-reveal">
+          <img src="logo.png" alt="" class="mb-6 h-16 w-auto md:h-20" width="160" height="160" aria-hidden="true" />
+          <h1 class="ds-display max-w-xl text-4xl md:text-5xl lg:text-6xl">A erva-mate conta a história deste território.</h1>
+          <p class="ds-muted mt-5 max-w-md text-lg leading-relaxed">Natureza, trabalho e memória na Rota das Salamarias, em Marau.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a class="ds-button ds-button-primary ds-button-lg" href="#percursos">Explorar</a>
+            <a class="ds-button ds-button-secondary web-only" href="#visita">Sobre o memorial</a>
+          </div>
+          <p class="mt-6 text-sm font-semibold totem-only hidden" style="color: var(--btn-secondary-fg)" data-totem-hint>Toque em um caminho para começar</p>
+        </div>
+      </section>
+
+      <section id="percursos" class="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24">
+        <div class="ds-reveal max-w-2xl">
+          <h2 class="ds-display text-4xl md:text-5xl">Escolha um caminho.</h2>
+          <p class="ds-muted mt-4 text-lg leading-relaxed">Quatro formas de conhecer o universo da erva-mate. Conteúdos detalhados entram nas próximas páginas.</p>
+        </div>
+
+        <div class="mt-10 grid gap-4 md:grid-cols-12">
+          <a class="museum-route museum-route-forest ds-reveal md:col-span-7" href="timeline.html" aria-label="Abrir linha do tempo">
+            <span class="museum-route-label">Histórias</span>
+            <h3>Linha do tempo</h3>
+            <p>Saberes, transformações e pessoas que fazem parte dessa história.</p>
+            <span class="museum-route-cta">Abrir</span>
+          </a>
+          <a class="museum-route museum-route-photo museum-route-territorio ds-reveal md:col-span-5" href="mapa.html" aria-label="Abrir mapa interativo">
+            <span class="museum-route-bg" aria-hidden="true"></span>
+            <span class="museum-route-label">Território</span>
+            <h3>Mapa interativo</h3>
+            <p>Lugares e pontos que conectam a região.</p>
+            <span class="museum-route-cta">Abrir</span>
+          </a>
+          <a class="museum-route museum-route-gourd ds-reveal md:col-span-5" href="#em-breve" aria-label="Mate pelo Pampa, em desenvolvimento">
+            <span class="museum-route-label">Sons</span>
+            <h3>Mate pelo Pampa</h3>
+            <p>Histórias e paisagens sonoras da cultura do mate.</p>
+            <span class="museum-route-cta">Ouvir</span>
+          </a>
+          <a class="museum-route museum-route-leaf ds-reveal md:col-span-7" href="#em-breve" aria-label="Jogo educativo, em desenvolvimento">
+            <span class="museum-route-label">Jogo</span>
+            <h3>Jogo da erva-mate</h3>
+            <p>Relacione e descubra o ciclo da erva-mate brincando.</p>
+            <span class="museum-route-cta">Jogar</span>
+          </a>
+        </div>
+      </section>
+
+      <section id="visita" class="web-only mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24">
+        <div class="ds-reveal grid items-start gap-8 rounded-brand border p-6 md:grid-cols-12 md:p-10" style="background: var(--surface); border-color: var(--line)">
+          <div class="md:col-span-7">
+            <h2 class="ds-display text-4xl md:text-5xl">Uma visita começa com curiosidade.</h2>
+            <p class="ds-muted mt-5 max-w-xl text-lg leading-relaxed">No memorial ou pela internet, a experiência convida a olhar a erva-mate como planta, trabalho, cultura e patrimônio.</p>
+          </div>
+          <aside class="museum-note p-5 md:col-span-5" aria-label="Informação para visita">
+            <h3 class="font-extrabold">Informações de visita</h3>
+            <p class="ds-muted mt-2 leading-relaxed">Horários, endereço, acessibilidade e contatos entram após o recebimento das informações oficiais.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section id="em-breve" class="mx-auto max-w-7xl px-5 pb-24 md:px-8 md:pb-28">
+        <div class="ds-reveal ds-panel-dark rounded-brand p-7 md:flex md:items-center md:justify-between md:p-10">
+          <div>
+            <h2 class="text-2xl font-extrabold">Áudio e jogo em construção.</h2>
+            <p class="mt-2 max-w-xl">Linha do tempo e mapa já estão disponíveis. Os próximos percursos entram em seguida.</p>
+          </div>
+          <a class="ds-button ds-button-gold mt-5 md:mt-0" href="#inicio">Voltar ao início</a>
+        </div>
+      </section>
+    </main>
+
+    <a class="ds-totem-action" href="index.html" data-home>Início</a>
+
+    <button class="ds-idle" type="button" data-idle-screen data-active="false" aria-label="Toque para começar a experiência">
+      <div>
+        <img src="logo.png" alt="" class="mx-auto mb-8 h-28 w-auto drop-shadow-lg" width="200" height="200" aria-hidden="true" />
+        <div class="ds-idle-pulse" aria-hidden="true"><span></span></div>
+        <p class="ds-display text-4xl md:text-5xl">Toque para começar</p>
+        <p class="mx-auto mt-4 max-w-md text-lg text-white/85">Memorial Regional da Erva Mate</p>
+        <p class="mt-1 text-base text-white/70">Marau, RS</p>
+      </div>
+    </button>
+
+    <style>
+      [data-mode="totem"] .totem-only { display: block !important; }
+      [data-mode="totem"] .web-only { display: none !important; }
+      [data-mode="totem"] #visita { display: none; }
+    </style>
+  </body>
+</html>

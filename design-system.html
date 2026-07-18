@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Design system do Memorial Regional da Erva Mate: tokens, componentes e padrões totem/web." />
+    <title>Design System | Memorial Regional da Erva Mate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              forest: { DEFAULT: '#1b583a', deep: '#123d29', soft: '#dcebe2' },
+              mate: { DEFAULT: '#b4892e', soft: '#f3e8cb' },
+              gourd: { DEFAULT: '#71442b', soft: '#eadbd2' }
+            },
+            fontFamily: { brand: ['Aptos', 'Segoe UI', 'system-ui', 'sans-serif'] },
+            borderRadius: { brand: '16px' },
+            boxShadow: { brand: '0 18px 50px rgb(18 61 41 / 0.12)' }
+          }
+        }
+      };
+    </script>
+    <link rel="stylesheet" href="tailwind.css" />
+  </head>
+  <body class="ds-page" data-mode="web">
+    <a class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 ds-button ds-button-primary" href="#conteudo">Ir para o conteúdo</a>
+
+    <header class="museum-header border-b" style="border-color: var(--line)">
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 md:px-8">
+        <a href="#inicio" aria-label="Memorial Regional da Erva Mate, início">
+          <img src="logo.png" alt="Memorial Regional da Erva Mate, Rota das Salamarias Marau RS" class="h-12 w-auto md:h-14" />
+        </a>
+        <nav class="hidden items-center gap-1 md:flex" aria-label="Navegação do design system">
+          <a class="ds-nav-link" href="#cores">Cores</a>
+          <a class="ds-nav-link" href="#componentes">Componentes</a>
+          <a class="ds-nav-link" href="#totem">Totem</a>
+        </nav>
+        <div class="flex items-center gap-2">
+          <button class="ds-button ds-button-secondary" type="button" data-mode-toggle>Simular totem</button>
+          <a class="ds-button ds-button-primary shrink-0" href="index.html">Ver início</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="conteudo">
+      <section id="inicio" class="mx-auto grid min-h-[58dvh] max-w-7xl items-center gap-10 px-5 py-12 md:grid-cols-12 md:px-8 md:py-16">
+        <div class="md:col-span-7">
+          <h1 class="ds-display max-w-3xl text-5xl md:text-6xl lg:text-7xl">Sistema visual do Memorial.</h1>
+          <p class="ds-muted mt-6 max-w-xl text-lg leading-relaxed">Linguagem viva e legível para o totem por toque e para o site público, a partir das cores e símbolos da marca.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a class="ds-button ds-button-primary" href="#componentes">Ver componentes</a>
+            <a class="ds-button ds-button-secondary" href="#totem">Padrões do totem</a>
+          </div>
+          <dl class="mt-10 grid max-w-lg grid-cols-3 gap-4 text-sm">
+            <div>
+              <dt class="ds-muted">Variance</dt>
+              <dd class="text-xl font-extrabold">6</dd>
+            </div>
+            <div>
+              <dt class="ds-muted">Motion</dt>
+              <dd class="text-xl font-extrabold">5</dd>
+            </div>
+            <div>
+              <dt class="ds-muted">Density</dt>
+              <dd class="text-xl font-extrabold">3</dd>
+            </div>
+          </dl>
+        </div>
+        <figure class="museum-hero-media md:col-span-5">
+          <img src="public/images/hero-erva-mate.png" alt="Folhas de erva-mate e cuia sob luz de floresta" width="900" height="1200" />
+          <figcaption>Referência visual: natureza, ofício e encontro.</figcaption>
+        </figure>
+      </section>
+
+      <section id="direcao" class="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-20">
+        <div class="max-w-3xl">
+          <h2 class="ds-display text-4xl md:text-5xl">Natureza, ofício e encontro.</h2>
+          <p class="ds-muted mt-5 text-lg leading-relaxed">O sistema parte do desenho da marca: verde de erval, dourado das folhas e marrom da cuia. Imagens devem valorizar folhas, mata, utensílios e a roda de mate, com escala humana e luz natural.</p>
+        </div>
+        <div class="mt-10 grid gap-4 md:grid-cols-12">
+          <article class="ds-card p-6 md:col-span-5">
+            <h3 class="text-xl font-extrabold">Tom de voz</h3>
+            <p class="ds-muted mt-3 leading-relaxed">Direto, convidativo e informativo. Fala com visitantes de várias idades e convida à descoberta, sem simplificar saberes de povos e comunidades ligados à erva-mate.</p>
+          </article>
+          <article class="ds-panel-dark rounded-brand p-6 md:col-span-7">
+            <h3 class="text-xl font-extrabold">Formas e ênfase</h3>
+            <p class="mt-3 max-w-2xl leading-relaxed">Cantos de 16px em superfícies e cards. Botões sempre em pílula. Um único acento dourado para destaque. Nunca depender só de hover: estados ativos e pressed são obrigatórios no totem.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="cores" class="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-20">
+        <h2 class="ds-display text-4xl md:text-5xl">Paleta da marca.</h2>
+        <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <article class="overflow-hidden rounded-brand border" style="border-color: var(--line)">
+            <div class="h-32 bg-forest"></div>
+            <div class="p-5">
+              <strong>Verde erval</strong>
+              <p class="ds-muted mt-1 font-mono text-sm">#1B583A</p>
+              <p class="ds-muted mt-3 text-sm">Ações primárias, navegação e estados ativos.</p>
+            </div>
+          </article>
+          <article class="overflow-hidden rounded-brand border" style="border-color: var(--line)">
+            <div class="h-32 bg-mate"></div>
+            <div class="p-5">
+              <strong>Dourado mate</strong>
+              <p class="ds-muted mt-1 font-mono text-sm">#B4892E</p>
+              <p class="ds-muted mt-3 text-sm">Destaques, foco e convite a descobrir.</p>
+            </div>
+          </article>
+          <article class="overflow-hidden rounded-brand border" style="border-color: var(--line)">
+            <div class="h-32 bg-gourd"></div>
+            <div class="p-5">
+              <strong>Marrom cuia</strong>
+              <p class="ds-muted mt-1 font-mono text-sm">#71442B</p>
+              <p class="ds-muted mt-3 text-sm">Narrativa, memória e materialidade.</p>
+            </div>
+          </article>
+          <article class="overflow-hidden rounded-brand border" style="border-color: var(--line)">
+            <div class="h-32" style="background: var(--canvas)"></div>
+            <div class="p-5">
+              <strong>Fundo mata clara</strong>
+              <p class="ds-muted mt-1 font-mono text-sm">#F5F8F3</p>
+              <p class="ds-muted mt-3 text-sm">Base de leitura e áreas de respiro.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="tipografia" class="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-20">
+        <div class="rounded-brand border p-6 md:p-10" style="background: var(--surface); border-color: var(--line)">
+          <h2 class="ds-display text-4xl md:text-6xl">Tipografia sem serifa.</h2>
+          <p class="mt-6 max-w-3xl text-xl font-semibold leading-snug">Títulos com peso alto e ritmo compacto. Corpo com alto contraste para leitura em pé no totem e em celular.</p>
+          <p class="ds-muted mt-4 max-w-2xl leading-relaxed">Família: Aptos ou Segoe UI (ambiente Windows do totem). Evita dependência externa na validação. Pode ser revisada com a identidade final.</p>
+        </div>
+      </section>
+
+      <section id="componentes" class="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-20">
+        <h2 class="ds-display text-4xl md:text-5xl">Componentes de interface.</h2>
+
+        <div class="mt-10 grid gap-6 lg:grid-cols-2">
+          <article class="ds-card p-6 md:p-8">
+            <h3 class="text-xl font-extrabold">Ações</h3>
+            <div class="mt-6 flex flex-wrap gap-3">
+              <button class="ds-button ds-button-primary" type="button">Explorar</button>
+              <button class="ds-button ds-button-secondary" type="button">Ver no mapa</button>
+              <button class="ds-button ds-button-gold" type="button">Ouvir história</button>
+              <button class="ds-button ds-button-lg ds-button-primary" type="button">Toque grande</button>
+            </div>
+            <div class="ds-panel-dark mt-6 rounded-brand p-5">
+              <p class="mb-4 text-sm font-bold">Sobre fundo escuro</p>
+              <div class="flex flex-wrap gap-3">
+                <button class="ds-button ds-button-gold" type="button">Ouvir história</button>
+                <button class="ds-button ds-button-on-dark" type="button">Continuar</button>
+              </div>
+            </div>
+            <div class="mt-7 flex flex-wrap gap-2">
+              <span class="ds-chip">Linha do tempo</span>
+              <span class="ds-chip">Acervo</span>
+              <span class="ds-chip">Território</span>
+            </div>
+          </article>
+
+          <article class="ds-card p-6 md:p-8">
+            <h3 class="text-xl font-extrabold">Formulários e estados</h3>
+            <label class="mt-5 block text-sm font-bold" for="busca">Buscar no acervo</label>
+            <input id="busca" class="ds-input mt-2" placeholder="Ex.: colheita, cuia, Marau" />
+            <div class="ds-feedback-success mt-5 rounded-r-brand p-4 text-sm font-semibold">Conteúdo salvo para a próxima visita.</div>
+            <div class="ds-feedback-error mt-3 rounded-r-brand p-4 text-sm font-semibold">Não foi possível iniciar o áudio. Tente novamente.</div>
+          </article>
+
+          <article class="ds-card p-6 md:p-8">
+            <h3 class="text-xl font-extrabold">Linha do tempo</h3>
+            <div class="mt-6">
+              <div class="ds-timeline-item">
+                <p class="ds-accent font-mono text-sm font-bold">Antes da colonização</p>
+                <h4 class="mt-1 font-extrabold">Saberes ancestrais</h4>
+                <p class="ds-muted mt-1 text-sm leading-relaxed">Ponto de partida sobre povos originários e a erva-mate.</p>
+              </div>
+              <div class="ds-timeline-item">
+                <p class="ds-accent font-mono text-sm font-bold">Séculos XIX e XX</p>
+                <h4 class="mt-1 font-extrabold">Trabalho e transformação</h4>
+                <p class="ds-muted mt-1 text-sm leading-relaxed">Cartões de memória para depoimentos e documentos.</p>
+              </div>
+              <div class="ds-timeline-item">
+                <p class="ds-accent font-mono text-sm font-bold">Hoje</p>
+                <h4 class="mt-1 font-extrabold">Território em continuidade</h4>
+              </div>
+            </div>
+          </article>
+
+          <article class="ds-card p-6 md:p-8">
+            <h3 class="text-xl font-extrabold">Mapa, áudio e jogo</h3>
+            <div class="relative mt-5 h-40 overflow-hidden rounded-brand bg-mate-soft" aria-label="Exemplo de mapa interativo">
+              <div class="absolute inset-0 opacity-50" style="background: repeating-linear-gradient(45deg, transparent 0 18px, rgb(27 88 58 / 0.12) 18px 20px)"></div>
+              <button class="ds-map-point left-[22%] top-[28%]" aria-label="Abrir ponto Erval" aria-pressed="true" type="button">1</button>
+              <button class="ds-map-point right-[24%] bottom-[24%]" aria-label="Abrir ponto Museu" aria-pressed="false" type="button">2</button>
+            </div>
+            <label class="mt-5 block text-sm font-bold" for="audio">História narrada</label>
+            <input id="audio" class="ds-audio-control mt-2" type="range" min="0" max="100" value="36" aria-label="Progresso do áudio" />
+            <div class="mt-5 grid grid-cols-2 gap-3">
+              <div class="ds-drag-item">Folhas</div>
+              <div class="ds-drop-zone">Solte aqui o item da colheita</div>
+            </div>
+          </article>
+        </div>
+
+        <div class="mt-10">
+          <h3 class="text-2xl font-extrabold">Tiles de percurso</h3>
+          <p class="ds-muted mt-2 max-w-2xl">Quatro módulos do plano. Sem numeração decorativa. Cada tile é um alvo de toque grande com título, frase curta e ação clara.</p>
+          <div class="mt-6 grid gap-4 md:grid-cols-12">
+            <a class="museum-route museum-route-forest md:col-span-7" href="#totem">
+              <span class="museum-route-label">Histórias</span>
+              <h3>Linha do tempo</h3>
+              <p>Saberes, transformações e pessoas dessa história.</p>
+              <span class="museum-route-cta">Abrir</span>
+            </a>
+            <a class="museum-route museum-route-gold md:col-span-5" href="#totem">
+              <span class="museum-route-label">Território</span>
+              <h3>Mapa interativo</h3>
+              <p>Lugares e pontos que conectam a região.</p>
+              <span class="museum-route-cta">Abrir</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="totem" class="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-20">
+        <h2 class="ds-display text-4xl md:text-5xl">Padrões do totem.</h2>
+        <p class="ds-muted mt-5 max-w-2xl text-lg leading-relaxed">Canvas de referência: 1080 × 1920 (retrato). Use <code class="rounded-brand px-1.5 py-0.5 text-sm font-bold" style="background: var(--forest-soft); color: var(--on-soft)">?mode=totem</code> ou o botão Simular totem. Informações essenciais nunca ficam só no hover.</p>
+
+        <div class="mt-10 grid gap-4 md:grid-cols-3">
+          <article class="ds-panel-dark rounded-brand p-6">
+            <h3 class="text-xl font-extrabold">Toque</h3>
+            <p class="mt-3 leading-relaxed">Alvo mínimo 48px. Controles principais 64-80px. Espaço entre alvos ≥ 12px.</p>
+          </article>
+          <article class="rounded-brand border p-6" style="border-color: var(--line); background: var(--surface)">
+            <h3 class="text-xl font-extrabold">Início fixo</h3>
+            <p class="ds-muted mt-3 leading-relaxed">Botão Início sempre visível no canto. Retorno automático após inatividade (padrão 90s).</p>
+          </article>
+          <article class="rounded-brand border p-6" style="border-color: var(--line); background: var(--mate-gold-soft); color: var(--on-soft)">
+            <h3 class="text-xl font-extrabold">Tela atrativa</h3>
+            <p class="mt-3 leading-relaxed" style="color: color-mix(in srgb, var(--on-soft) 85%, transparent)">Quando ocioso, overlay “Toque para começar” cobre a tela e reinicia no início.</p>
+          </article>
+        </div>
+
+        <div class="mt-8 rounded-brand border p-6 md:p-8" style="background: var(--surface); border-color: var(--line)">
+          <h3 class="text-xl font-extrabold">Checklist de UX do totem</h3>
+          <ul class="ds-muted mt-4 grid gap-2 text-base leading-relaxed md:grid-cols-2">
+            <li>Uma ação por tela ou grade de 4 caminhos claros</li>
+            <li>Textos curtos: título ≤ 6 palavras, apoio ≤ 20 palavras</li>
+            <li>Contraste alto em botões e tiles</li>
+            <li>Animações curtas que não bloqueiam o próximo toque</li>
+            <li>Áudio só após gesto explícito do visitante</li>
+            <li>Alternativa ao drag-and-drop: tocar item e depois destino</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-5 pb-20 md:px-8 md:pb-28">
+        <div class="rounded-brand border p-6 md:p-8" style="background: var(--surface); border-color: var(--line)">
+          <h2 class="text-2xl font-extrabold">Estados de carregamento</h2>
+          <p class="ds-muted mt-2">Esqueletos no formato do conteúdo final, sem bloquear a navegação.</p>
+          <div class="mt-6 grid gap-3 sm:grid-cols-3">
+            <div class="ds-skeleton h-24"></div>
+            <div class="ds-skeleton h-24"></div>
+            <div class="ds-skeleton h-24"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <a class="ds-totem-action" href="#inicio">Início</a>
+
+    <script>
+      const root = document.body;
+      const toggle = document.querySelector('[data-mode-toggle]');
+      const applyMode = (mode) => {
+        root.dataset.mode = mode;
+        if (toggle) toggle.textContent = mode === 'totem' ? 'Modo web' : 'Simular totem';
+      };
+      const params = new URLSearchParams(location.search);
+      applyMode(params.get('mode') === 'totem' ? 'totem' : 'web');
+      toggle?.addEventListener('click', () => {
+        const next = root.dataset.mode === 'totem' ? 'web' : 'totem';
+        applyMode(next);
+        const url = new URL(location.href);
+        if (next === 'totem') url.searchParams.set('mode', 'totem');
+        else url.searchParams.delete('mode');
+        history.replaceState(null, '', url);
+      });
+    </script>
+  </body>
+</html>
