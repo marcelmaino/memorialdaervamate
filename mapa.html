@@ -51,19 +51,25 @@
       <section class="mx-auto max-w-7xl px-5 pt-8 pb-6 md:px-8 md:pt-12">
         <div class="max-w-2xl">
           <h1 class="ds-display text-4xl md:text-5xl lg:text-6xl">Mapa interativo.</h1>
-          <p class="ds-muted mt-4 text-lg leading-relaxed">Toque em um ponto no mapa ou na lista para abrir a descrição.</p>
+          <p class="ds-muted mt-4 text-lg leading-relaxed">16 pontos da propriedade. Toque no número da planta ou na lista para abrir cada espaço.</p>
         </div>
       </section>
 
       <section class="mx-auto max-w-7xl px-5 pb-28 md:px-8">
-        <div class="map-layout">
+        <div class="map-filters" data-map-filters></div>
+        <div class="map-layout mt-6">
           <div
             class="map-stage"
             data-map-stage
             tabindex="0"
-            aria-label="Mapa com pontos selecionáveis. Use as setas do teclado para navegar entre os pontos."
+            aria-label="Planta da propriedade com pontos selecionáveis. Use as setas do teclado para navegar."
           >
-            <img class="map-image" data-map-image src="public/images/rota.jpg" alt="" width="1600" height="1000" />
+            <div class="map-plan" aria-hidden="true">
+              <span class="map-zone map-zone-nature">Trilhas</span>
+              <span class="map-zone map-zone-prod">Produção</span>
+              <span class="map-zone map-zone-play">Lazer</span>
+              <span class="map-zone map-zone-home">Casa e memória</span>
+            </div>
             <div class="map-points" data-map-points></div>
           </div>
 
