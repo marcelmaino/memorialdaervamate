@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Curiosidades da erva-mate: preparo nos países vizinhos, o nome científico, o tereré, o chimarrão e o barbaquá." />
+    <title>Curiosidades | Memorial Regional da Erva Mate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              forest: { DEFAULT: '#1b583a', deep: '#123d29', soft: '#dcebe2' },
+              mate: { DEFAULT: '#b4892e', soft: '#f3e8cb' },
+              gourd: { DEFAULT: '#71442b', soft: '#eadbd2' }
+            },
+            borderRadius: { brand: '16px' }
+          }
+        }
+      };
+    </script>
+    <link rel="stylesheet" href="tailwind.css" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="src/data/curiosidades.js" defer></script>
+    <script src="src/js/curiosidades.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body class="ds-page" data-mode="web">
+    <a class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 ds-button ds-button-primary" href="#conteudo">Ir para o conteúdo</a>
+
+    <header class="museum-header border-b" style="border-color: var(--line)">
+      <div class="relative mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 md:px-8">
+        <a href="index.html" data-home-link aria-label="Memorial Regional da Erva Mate, início">
+          <img src="logo.png" alt="Memorial Regional da Erva Mate, Rota das Salamarias Marau RS" class="h-12 w-auto md:h-14" width="200" height="200" />
+        </a>
+        <nav class="web-only hidden items-center gap-1 lg:flex" aria-label="Navegação principal">
+          <a class="ds-nav-link" href="index.html">Início</a>
+          <a class="ds-nav-link" href="timeline.html">Tempo</a>
+          <a class="ds-nav-link" href="mapa.html">Mapa</a>
+          <a class="ds-nav-link" href="botanica.html">Botânica</a>
+          <a class="ds-nav-link" aria-current="page" href="curiosidades.html">Curiosidades</a>
+          <a class="ds-nav-link" href="jogo.html">Jogo</a>
+        </nav>
+        <button class="ds-button ds-button-secondary web-only md:hidden" type="button" aria-expanded="false" aria-controls="menu-mobile" data-menu-trigger>Menu</button>
+        <nav id="menu-mobile" class="museum-menu md:hidden" aria-label="Navegação móvel" data-mobile-menu data-open="false">
+          <a class="ds-nav-link" href="index.html">Início</a>
+          <a class="ds-nav-link" href="timeline.html">Linha do tempo</a>
+          <a class="ds-nav-link" href="mapa.html">Mapa</a>
+          <a class="ds-nav-link" href="botanica.html">Botânica</a>
+          <a class="ds-nav-link" aria-current="page" href="curiosidades.html">Curiosidades</a>
+          <a class="ds-nav-link" href="jogo.html">Jogo</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="conteudo" class="cur-page">
+      <section class="mx-auto max-w-7xl px-5 pt-8 pb-6 md:px-8 md:pt-12">
+        <div class="max-w-2xl">
+          <h1 class="ds-display text-4xl md:text-5xl lg:text-6xl">Curiosidades.</h1>
+          <p class="ds-muted mt-4 text-lg leading-relaxed">Cinco perguntas para olhar a erva-mate de outro jeito. Toque numa delas para ler.</p>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-5 pb-28 md:px-8">
+        <div class="cur-layout">
+          <div>
+            <h2 class="text-xl font-extrabold">Perguntas</h2>
+            <div class="cur-list mt-4" data-cur-list></div>
+          </div>
+          <article class="cur-panel" data-cur-panel aria-live="polite">
+            <p class="ds-muted">Carregando curiosidades...</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <a class="ds-totem-action" href="index.html" data-home>Início</a>
+
+    <button class="ds-idle" type="button" data-idle-screen data-active="false" aria-label="Toque para começar a experiência">
+      <div>
+        <img src="logo.png" alt="" class="mx-auto mb-8 h-28 w-auto drop-shadow-lg" width="200" height="200" aria-hidden="true" />
+        <div class="ds-idle-pulse" aria-hidden="true"><span></span></div>
+        <p class="ds-display text-4xl md:text-5xl">Toque para começar</p>
+        <p class="mx-auto mt-4 max-w-md text-lg text-white/85">Memorial Regional da Erva Mate</p>
+        <p class="mt-1 text-base text-white/70">Marau, RS</p>
+      </div>
+    </button>
+
+    <style>
+      [data-mode="totem"] .totem-only { display: block !important; }
+      [data-mode="totem"] .web-only { display: none !important; }
+    </style>
+  </body>
+</html>

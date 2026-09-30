@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Jogo da erva-mate: ordene as etapas do galpão, da descarga ao soque, e veja o processo em funcionamento.">
+  <title>Jogo da erva-mate | Memorial Regional da Erva Mate</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pampa: {
+              gold: '#E5A93B',
+              bronze: '#C37D2A',
+              leather: '#5C381E',
+              wood: '#3A2111',
+              dark: '#1C120C',
+              leaf: '#2E6B34',
+              leafLight: '#4CAF50',
+              leafBright: '#78C257',
+              herbAsh: '#6D7C5D',
+              cream: '#F7EEDD',
+              wine: '#801A1A'
+            }
+          },
+          fontFamily: {
+            title: ['Cinzel', 'serif'],
+            serif: ['"Playfair Display"', 'serif'],
+            sans: ['Montserrat', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="tailwind.css" />
+  <script src="app.js" defer></script>
+
+  <style>
+    /* Estilos e animações táteis para Totem Touchscreen */
+    .jogo-root,
+    .jogo-toolbar,
+    #feedbackModal {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .jogo-page {
+      background: radial-gradient(circle at 50% 20%, #2b180d 0%, #150c07 100%);
+      touch-action: manipulation;
+    }
+
+    /* Textura de couro/madeira com ruído SVG */
+    .wood-texture {
+      background-color: #24140a;
+      background-image: radial-gradient(rgba(229, 169, 59, 0.08) 1px, transparent 0);
+      background-size: 24px 24px;
+    }
+
+    /* Brilho dourado para elementos de destaque */
+    .glow-gold {
+      box-shadow: 0 0 25px rgba(229, 169, 59, 0.35);
+    }
+    .glow-gold-pulse {
+      animation: pulseGlow 2.4s infinite ease-in-out;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 15px rgba(229, 169, 59, 0.25); }
+      50% { box-shadow: 0 0 35px rgba(229, 169, 59, 0.6); }
+    }
+
+    /* Animações mecânicas da erva mate */
+    @keyframes flameFlicker {
+      0%, 100% { transform: scaleY(1) scaleX(1) rotate(-1deg); }
+      50% { transform: scaleY(1.15) scaleX(0.92) rotate(2deg); filter: brightness(1.2); }
+    }
+    .flame-anim {
+      transform-origin: bottom center;
+      animation: flameFlicker 0.45s infinite alternate ease-in-out;
+    }
+
+    @keyframes smokeDrift {
+      0% { transform: translateY(0) scale(0.9) translateX(0); opacity: 0.6; }
+      100% { transform: translateY(-70px) scale(1.6) translateX(12px); opacity: 0; }
+    }
+    .smoke-anim-1 { animation: smokeDrift 2.2s infinite ease-out; }
+    .smoke-anim-2 { animation: smokeDrift 2.8s infinite ease-out 0.8s; }
+    .smoke-anim-3 { animation: smokeDrift 3.1s infinite ease-out 1.4s; }
+
+    @keyframes soqueDrop {
+      0%, 20% { transform: translateY(-38px); }
+      40% { transform: translateY(8px); }
+      48% { transform: translateY(3px); }
+      55% { transform: translateY(8px); }
+      100% { transform: translateY(-38px); }
+    }
+    .soque-1 { animation: soqueDrop 1.6s infinite cubic-bezier(0.77, 0, 0.175, 1); }
+    .soque-2 { animation: soqueDrop 1.6s infinite cubic-bezier(0.77, 0, 0.175, 1) 0.53s; }
+    .soque-3 { animation: soqueDrop 1.6s infinite cubic-bezier(0.77, 0, 0.175, 1) 1.06s; }
+
+    @keyframes bladeRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .blade-spin {
+      transform-origin: center;
+      animation: bladeRotate 1.8s infinite linear;
+    }
+
+    @keyframes waterWheelSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .wheel-spin {
+      transform-origin: center;
+      animation: waterWheelSpin 7s infinite linear;
+    }
+
+    @keyframes leafSway {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(4deg); }
+    }
+    .leaf-sway {
+      transform-origin: bottom center;
+      animation: leafSway 3s infinite ease-in-out;
+    }
+
+    /* Scrollbars customizadas para telas touch */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.2);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c37d2a;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body class="jogo-page wood-texture text-pampa-cream min-h-screen flex flex-col font-sans overflow-x-hidden" data-mode="web">
+  <a class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 ds-button ds-button-primary" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="museum-header border-b" style="border-color: rgb(180 137 46 / 0.35)">
+    <div class="relative mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 md:px-8">
+      <a href="index.html" data-home-link aria-label="Memorial Regional da Erva Mate, início">
+        <img src="logo.png" alt="Memorial Regional da Erva Mate, Rota das Salamarias Marau RS" class="h-12 w-auto md:h-14" width="200" height="200" />
+      </a>
+      <nav class="web-only hidden items-center gap-1 lg:flex" aria-label="Navegação principal">
+        <a class="ds-nav-link" href="index.html">Início</a>
+        <a class="ds-nav-link" href="timeline.html">Tempo</a>
+        <a class="ds-nav-link" href="mapa.html">Mapa</a>
+        <a class="ds-nav-link" href="botanica.html">Botânica</a>
+        <a class="ds-nav-link" href="curiosidades.html">Curiosidades</a>
+        <a class="ds-nav-link" aria-current="page" href="jogo.html">Jogo</a>
+      </nav>
+      <button class="ds-button ds-button-secondary web-only md:hidden" type="button" aria-expanded="false" aria-controls="menu-mobile" data-menu-trigger>Menu</button>
+      <nav id="menu-mobile" class="museum-menu md:hidden" aria-label="Navegação móvel" data-mobile-menu data-open="false">
+        <a class="ds-nav-link" href="index.html">Início</a>
+        <a class="ds-nav-link" href="timeline.html">Linha do tempo</a>
+        <a class="ds-nav-link" href="mapa.html">Mapa</a>
+        <a class="ds-nav-link" href="botanica.html">Botânica</a>
+        <a class="ds-nav-link" href="curiosidades.html">Curiosidades</a>
+        <a class="ds-nav-link" aria-current="page" href="jogo.html">Jogo</a>
+      </nav>
+    </div>
+  </header>
+
+  <header class="jogo-toolbar">
+    <div class="jogo-toolbar-copy">
+      <p class="jogo-toolbar-kicker">Desafio dos galpões</p>
+      <h1 class="jogo-toolbar-title">O Caminho do Mate</h1>
+    </div>
+    <div class="flex items-center gap-2 bg-pampa-wood/80 p-1.5 rounded-2xl border border-pampa-gold/40 flex-wrap">
+      <button id="btnTabGame" onclick="switchTab('game')" class="px-5 py-3 rounded-xl font-bold text-sm md:text-base flex items-center gap-2 transition-all duration-200 bg-pampa-gold text-pampa-dark shadow-md">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span>Desafio de Ordenar</span>
+      </button>
+      <button id="btnTabExplore" onclick="switchTab('explore')" class="px-5 py-3 rounded-xl font-bold text-sm md:text-base flex items-center gap-2 transition-all duration-200 text-pampa-cream hover:text-pampa-gold">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+        <span>Ver em Funcionamento</span>
+      </button>
+      <button id="btnSoundToggle" onclick="toggleSound()" title="Ativar ou desativar sons" class="w-12 h-12 rounded-xl bg-pampa-leather/90 border border-pampa-gold/40 text-pampa-gold flex items-center justify-center ml-1 active:scale-95 transition-transform">
+        <span id="soundIcon">🔊</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="conteudo" class="jogo-root flex-1 max-w-7xl mx-auto w-full p-4 md:p-8 flex flex-col justify-start pb-28">
+
+    <!-- ==================== ABA 1: JOGO DE ORDENAÇÃO ==================== -->
+    <section id="viewGame" class="flex flex-col gap-6">
+      <!-- Banner de Instrução do Totem -->
+      <div class="bg-gradient-to-r from-pampa-wood/90 via-pampa-leather/80 to-pampa-wood/90 border-2 border-pampa-gold/60 rounded-3xl p-6 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="z-10 space-y-2 text-center md:text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pampa-leaf/70 text-pampa-leafBright text-xs font-bold uppercase tracking-wider border border-pampa-leafBright/30">
+            <span>Tarefa Tradicionalista</span>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-title font-bold text-pampa-cream">
+            Ordene as 5 Etapas Tradicionais
+          </h2>
+          <p class="text-pampa-cream/80 text-sm md:text-base max-w-2xl leading-relaxed">
+            Como um verdadeiro mestre ervateiro, organize o processo do galho verde até o chimarrão cevado. Toque nas setas <strong class="text-pampa-gold">▲ Subir</strong> e <strong class="text-pampa-gold">▼ Descer</strong> de cada etapa ou arraste os cartões.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3 z-10 w-full md:w-auto justify-center">
+          <button onclick="shuffleOrder()" class="px-5 py-4 rounded-2xl bg-pampa-leather hover:bg-pampa-dark border border-pampa-gold/40 text-pampa-cream font-bold text-sm flex items-center gap-2 active:scale-95 shadow transition">
+            <svg class="w-5 h-5 text-pampa-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            <span>Misturar</span>
+          </button>
+          <button onclick="checkGameOrder()" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-pampa-gold to-pampa-bronze text-pampa-dark font-extrabold text-base md:text-lg flex items-center gap-3 shadow-2xl active:scale-95 glow-gold hover:brightness-110 transition">
+            <svg class="w-6 h-6 text-pampa-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            <span>VERIFICAR ORDEM</span>
+          </button>
+        </div>
+
+        <!-- Detalhe decorativo de fundo -->
+        <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none w-72 h-72">
+          <svg viewBox="0 0 100 100" fill="currentColor" class="text-pampa-gold w-full h-full"><path d="M50 0 C60 25 75 40 100 50 C75 60 60 75 50 100 C40 75 25 60 0 50 C25 40 40 25 50 0 Z"/></svg>
+        </div>
+      </div>
+
+      <!-- Lista de Etapas Reordenáveis (Container) -->
+      <div id="stagesList" class="grid grid-cols-1 gap-4">
+        <!-- Renderizado dinamicamente via JavaScript -->
+      </div>
+    </section>
+
+    <!-- ==================== ABA 2: EXPLORAÇÃO E ANIMAÇÃO EM TEMPO REAL ==================== -->
+    <section id="viewExplore" class="hidden flex flex-col gap-6">
+      <div class="text-center md:text-left">
+        <h2 class="text-2xl md:text-3xl font-title font-bold text-pampa-cream">
+          Engenhos & Fogueiras em Ação
+        </h2>
+        <p class="text-pampa-cream/70 text-sm md:text-base">
+          Toque em uma das fases abaixo para ver a maquinaria viva da lida ervateira tradicional em ação.
+        </p>
+      </div>
+
+      <!-- Botões Seletivos de Etapas para Totem -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3" id="exploreNavButtons">
+        <!-- Gerado dinamicamente -->
+      </div>
+
+      <!-- Palco de Exibição da Maquinaria/Etapa Selecionada -->
+      <div id="stageDisplayCard" class="bg-gradient-to-b from-pampa-wood via-pampa-dark to-black border-2 border-pampa-gold/70 rounded-3xl p-6 md:p-8 shadow-2xl flex flex-col lg:flex-row gap-8 items-center min-h-[440px]">
+        <!-- Ilustração Grande Animada (Lado Esquerdo) -->
+        <div id="exploreAnimationContainer" class="w-full lg:w-1/2 aspect-video bg-[#1a0f09] rounded-2xl border border-pampa-gold/40 shadow-inner flex items-center justify-center p-4 relative overflow-hidden">
+          <!-- SVG dinâmico aqui -->
+        </div>
+
+        <!-- Detalhes Históricos e Controles do Totem (Lado Direito) -->
+        <div class="w-full lg:w-1/2 flex flex-col justify-between h-full space-y-4">
+          <div>
+            <div class="flex items-center gap-3">
+              <span id="exploreBadge" class="px-3 py-1 rounded-lg bg-pampa-bronze text-pampa-dark font-extrabold text-sm uppercase">ETAPA 1</span>
+              <span id="exploreSubname" class="text-pampa-gold font-serif italic text-base">A colheita e recepção</span>
+            </div>
+            <h3 id="exploreTitle" class="text-3xl md:text-4xl font-title font-extrabold text-pampa-cream mt-2">
+              DESCARGA
+            </h3>
+            <p id="exploreDesc" class="text-pampa-cream/90 text-base md:text-lg mt-4 leading-relaxed font-sans">
+              Os ramos recém-colhidos nos ervais chegam em fardos amarrados chamados de <em>raídos</em>. É fundamental que a descarga seja rápida para evitar a fermentação precoce das folhas verdes ao sol.
+            </p>
+          </div>
+
+          <div class="bg-pampa-wood/60 p-4 rounded-2xl border border-pampa-gold/20 space-y-2">
+            <h4 class="text-xs uppercase tracking-widest text-pampa-gold font-bold flex items-center gap-2">
+              <span>🌾</span> Segredo do Mestre Ervateiro:
+            </h4>
+            <p id="exploreFact" class="text-sm text-pampa-cream/80 italic">
+              "A erva que dorme no chão sem sapecar perde o frescor e a doçura da seiva original."
+            </p>
+          </div>
+
+          <div class="flex items-center gap-4 pt-2">
+            <button onclick="playStageSoundEffect()" class="px-6 py-4 rounded-2xl bg-pampa-leather hover:bg-pampa-gold hover:text-pampa-dark text-pampa-cream border border-pampa-gold/50 font-bold flex items-center gap-3 active:scale-95 transition shadow-lg">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>
+              <span>Ouvir o Som da Etapa</span>
+            </button>
+            <button onclick="nextExploreStage()" class="px-6 py-4 rounded-2xl bg-pampa-wood hover:bg-pampa-bronze hover:text-pampa-dark text-pampa-cream font-bold border border-pampa-gold/40 flex items-center gap-2 active:scale-95 transition">
+              <span>Próxima Etapa</span>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="feedbackModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4 jogo-modal transition-opacity">
+    <div id="modalBox" class="bg-gradient-to-b from-pampa-wood to-pampa-dark border-4 border-pampa-gold rounded-3xl max-w-lg w-full p-8 shadow-2xl text-center transform scale-90 transition-transform duration-300 relative overflow-hidden">
+      <!-- Efeito visual decorativo -->
+      <div id="modalGlowRing" class="absolute -top-24 -left-24 w-48 h-48 bg-pampa-gold/20 rounded-full blur-3xl"></div>
+
+      <!-- Ícone ou Chimarrão de Vitória -->
+      <div id="modalIconContainer" class="w-28 h-28 mx-auto mb-4 flex items-center justify-center">
+        <!-- SVG dinâmico de Sucesso ou Alerta -->
+      </div>
+
+      <h3 id="modalTitle" class="text-3xl font-title font-extrabold text-pampa-gold">
+        ¡Buenas, Patrão!
+      </h3>
+      <p id="modalMessage" class="text-pampa-cream/90 text-base md:text-lg mt-3 leading-relaxed">
+        Você acertou a ordem sagrada dos ervais do Sul!
+      </p>
+
+      <!-- Indicadores de acertos específicos -->
+      <div id="modalStats" class="my-6 grid grid-cols-5 gap-2 bg-pampa-dark/60 p-3 rounded-2xl border border-pampa-gold/30">
+        <!-- Marcadores 1..5 preenchidos dinamicamente -->
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <button onclick="closeModal()" class="px-8 py-4 rounded-2xl bg-pampa-gold text-pampa-dark font-extrabold text-lg active:scale-95 shadow-lg glow-gold hover:brightness-110 transition">
+          Continuar Vivenciando
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* DADOS HISTÓRICOS E ILUSTRAÇÕES VETORIAIS DAS ETAPAS DA ERVA-MATE */
+    const MASTER_STAGES = [
+      {
+        id: 1,
+        code: 'DESCARGA',
+        name: 'DESCARGA',
+        orderCorrect: 1,
+        subname: 'Recepção dos Raídos Verdes',
+        shortDesc: 'Chegada dos feixes verdes (raídos) amarrados no poncho ou corda, descarregados no pátio do engenho.',
+        fullDesc: 'Após o corte nos ervais nativos, as ponchadas e feixes de ramos frescos são descarregados diretamente para a mesa de entrada. A agilidade aqui é vital para que a folha não murche nem fermente antes de enfrentar o fogo.',
+        curiosity: 'O transportador tradicional organizava os feixes com nós rápidos que podiam ser desfeitos com apenas um puxão na porteira do galpão.',
+        color: '#388E3C',
+        svgRender: () => `
+          <video 
+            src="public/videos/descarga.mp4" 
+            class="w-full h-full rounded-xl object-cover"
+            autoplay 
+            muted 
+            loop 
+            playsinline
+            style="background: #1A3320; min-width: 100%; min-height: 100%;">
+          </video>
+        `
+ 
+      },
+      {
+        id: 2,
+        code: 'SAPECO',
+        name: 'SAPECO',
+        orderCorrect: 2,
+        subname: 'O Batismo de Fogo Rápido',
+        shortDesc: 'Rápida passagem dos galhos verdes sobre chamas vivas para estalar a cutícula das folhas e preservar a cor.',
+        fullDesc: 'O sapecamento consiste em passar os galhos vigorosamente sobre labaredas ardentes por alguns segundos. O calor instantâneo inativa as enzimas oxidativas que escureceriam a folha, conservando o verde vibrante e o aroma do chimarrão.',
+        curiosity: 'Ouve-se um estalido característico ("crepitar") quando as pequenas bolsas de água das folhas estouram de encontro ao fogo.',
+        color: '#D84315',
+        svgRender: () => `
+          <video 
+            src="public/videos/sapeco.mp4" 
+            class="w-full h-full rounded-xl object-cover"
+            autoplay 
+            muted 
+            loop 
+            playsinline
+            style="background: #1A3320; min-width: 100%; min-height: 100%;">
+          </video>
+        `
+      },
+      {
+        id: 3,
+        code: 'BARBACUA',
+        name: 'BARBACUÁ',
+        orderCorrect: 3,
+        subname: 'Secagem Lenta e Fumaça Aromática',
+        shortDesc: 'Secagem das folhas em grelha arqueada de madeira/taquara sobre calor suave e fumaça por longas horas.',
+        fullDesc: 'No Barbacuá, a erva sapecada é espalhada sobre um estrado curvo de madeira suspensa. O calor suave de um túnel de fogo subterrâneo sobe junto com fumaça nobre de lenhas nativas, retirando toda a umidade durante 12 a 24 horas ininterruptas.',
+        curiosity: 'O fogo fica a metros de distância através de um túnel subterrâneo para não queimar as folhas, apenas defumá-las com carinho.',
+        color: '#E65100',
+        svgRender: () => `
+          <video 
+            src="public/videos/barbacua.mp4" 
+            class="w-full h-full rounded-xl object-cover"
+            autoplay 
+            muted 
+            loop 
+            playsinline
+            style="background: #1A3320; min-width: 100%; min-height: 100%;">
+          </video>
+        `
+ 
+      },
+      {
+        id: 4,
+        code: 'CANCHEAMENTO',
+        name: 'CANCHEAMENTO',
+        orderCorrect: 4,
+        subname: 'A Primeira Fragmentação',
+        shortDesc: 'Trituração rústica dos galhos já secos por lâminas ou facões, gerando a cancheada grossa.',
+        fullDesc: 'Depois de secas no barbacuá, as folhas e galhos quebradiços vão para o cancheador (facões giratórios ou rolos dentados). A folha é picada grosseiramente em pequenos fragmentos de 1 cm, separando galhos mais grossos e facilitando a estocagem.',
+        curiosity: 'O termo "cancha" vem do espaço plano ou picador de madeira onde o campeiro cancheava as folhas a golpes certeiros de podão.',
+        color: '#F57C00',
+        svgRender: () => `
+          <video 
+            src="public/videos/cancheamento.mp4" 
+            class="w-full h-full rounded-xl object-cover"
+            autoplay 
+            muted 
+            loop 
+            playsinline
+            style="background: #1A3320; min-width: 100%; min-height: 100%;">
+          </video>
+        `
+ 
+      },
+      {
+        id: 5,
+        code: 'SOQUE',
+        name: 'SOQUE',
+        orderCorrect: 5,
+        subname: 'A Moagem Final nos Pilões do Engenho',
+        shortDesc: 'Moagem rústica com pilões e soques de madeira movidos por roda d’água até atingir a textura fina.',
+        fullDesc: 'O gran finale tradicional: pesados maços de madeira (soques) batem ritmicamente nos pilões de lei, desmanchando a erva cancheada até virar o pó verde e perfumado pronto para encher a cuia gaúcha com água quente e bomba prateada.',
+        curiosity: 'O ritmo do soque nos velhos moinhos coloniais ditava a cadência das canções campeiras e causos nos galpões de outono.',
+        color: '#2E7D32',
+        svgRender: () => `
+          <video 
+            src="public/videos/soque.mp4" 
+            class="w-full h-full rounded-xl object-cover"
+            autoplay 
+            muted 
+            loop 
+            playsinline
+            style="background: #1A3320; min-width: 100%; min-height: 100%;">
+          </video>
+        `
+ 
+      }
+    ];
+
+    /* ESTADO DO JOGO */
+    let currentOrder = [];
+    let currentExploreIndex = 0;
+    let isSoundMuted = false;
+
+    // Inicializador Web Audio API para totens interativos (sons sintéticos sem depender de internet)
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioCtx = new AudioContextClass();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // Tocador de notas e efeitos tradicionalistas sintetizados
+    function playTone(freq, type = 'sine', duration = 0.2, gainVol = 0.15) {
+      if (isSoundMuted) return;
+      try {
+        initAudio();
+        if (!audioCtx) return;
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+        gain.gain.setValueAtTime(gainVol, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {
+        console.warn('Áudio não inicializado:', e);
+      }
+    }
+
+    // Efeitos sonoros temáticos
+    function playTapSound() {
+      playTone(320, 'triangle', 0.12, 0.2);
+    }
+
+    function playMoveSound() {
+      playTone(440, 'sine', 0.15, 0.25);
+    }
+
+    function playWinFanfare() {
+      if (isSoundMuted) return;
+      initAudio();
+      // Acorde gaúcho triunfante (Tônica, terça, quinta)
+      const chord = [261.63, 329.63, 392.00, 523.25, 659.25];
+      chord.forEach((note, idx) => {
+        setTimeout(() => {
+          playTone(note, 'triangle', 0.6, 0.25);
+        }, idx * 110);
+      });
+    }
+
+    function playErrorSound() {
+      playTone(180, 'sawtooth', 0.35, 0.2);
+    }
+
+    function toggleSound() {
+      isSoundMuted = !isSoundMuted;
+      document.getElementById('soundIcon').innerText = isSoundMuted ? '🔇' : '🔊';
+    }
+
+    // Alternador de Abas do Totem
+    function switchTab(tab) {
+      playTapSound();
+      const btnGame = document.getElementById('btnTabGame');
+      const btnExplore = document.getElementById('btnTabExplore');
+      const viewGame = document.getElementById('viewGame');
+      const viewExplore = document.getElementById('viewExplore');
+
+      if (tab === 'game') {
+        btnGame.className = "px-5 py-3 rounded-xl font-bold text-sm md:text-base flex items-center gap-2 transition-all duration-200 bg-pampa-gold text-pampa-dark shadow-md";
+        btnExplore.className = "px-5 py-3 rounded-xl font-bold text-sm md:text-base flex items-center gap-2 transition-all duration-200 text-pampa-cream hover:text-pampa-gold";
+        viewGame.classList.remove('hidden');
+        viewExplore.classList.add('hidden');
+      } else {
+        btnExplore.className = "px-5 py-3 rounded-xl font-bold text-sm md:text-base flex items-center gap-2 transition-all duration-200 bg-pampa-gold text-pampa-dark shadow-md";
+        btnGame.className = "px-5 py-3 rounded-xl font-bold text-sm md:text-base flex items-center gap-2 transition-all duration-200 text-pampa-cream hover:text-pampa-gold";
+        viewExplore.classList.remove('hidden');
+        viewGame.classList.add('hidden');
+        renderExploreStage(currentExploreIndex);
+      }
+    }
+
+    /* EMBARALHAR E RENDERIZAR O JOGO DE ORDENAÇÃO */
+    function shuffleOrder() {
+      playTapSound();
+      // Embaralhamento que garante que não venha 100% ordenado na primeira vez
+      let shuffled;
+      do {
+        shuffled = [...MASTER_STAGES].sort(() => Math.random() - 0.5);
+      } while (shuffled.every((s, i) => s.orderCorrect === i + 1));
+
+      currentOrder = shuffled;
+      renderGameStages();
+    }
+
+    function moveStage(index, direction) {
+      playMoveSound();
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= currentOrder.length) return;
+
+      const item = currentOrder.splice(index, 1)[0];
+      currentOrder.splice(targetIndex, 0, item);
+      renderGameStages();
+    }
+
+    function renderGameStages() {
+      const container = document.getElementById('stagesList');
+      container.innerHTML = '';
+
+      currentOrder.forEach((stage, idx) => {
+        const card = document.createElement('div');
+        card.className = "stage-card bg-pampa-wood/80 hover:bg-pampa-wood border-2 border-pampa-gold/40 hover:border-pampa-gold rounded-3xl p-4 md:p-5 flex flex-col md:flex-row items-center justify-between gap-5 transition-all duration-200 shadow-xl";
+        card.setAttribute('data-id', stage.id);
+
+        card.innerHTML = `
+          <!-- Indicador de Posição Atual no Totem -->
+          <div class="flex items-center gap-4 w-full md:w-auto">
+            <div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br from-pampa-leather to-pampa-dark border-2 border-pampa-gold flex items-center justify-center text-pampa-gold font-title font-extrabold text-xl md:text-2xl shadow-inner shrink-0">
+              ${idx + 1}º
+            </div>
+
+            <!-- Miniatura Ilustrada da Etapa -->
+            <div class="w-24 h-20 md:w-32 md:h-24 rounded-2xl overflow-hidden bg-black/40 border border-pampa-gold/30 shrink-0 pointer-events-none">
+              ${stage.svgRender()}
+            </div>
+
+            <!-- Título e Descrição da Etapa -->
+            <div class="flex-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="text-xl md:text-2xl font-title font-bold text-pampa-cream">
+                  ${stage.name}
+                </h3>
+                <span class="text-xs px-2.5 py-0.5 rounded-full bg-pampa-gold/20 text-pampa-gold font-semibold">
+                  ${stage.subname}
+                </span>
+              </div>
+              <p class="text-xs md:text-sm text-pampa-cream/70 mt-1 max-w-xl line-clamp-2">
+                ${stage.shortDesc}
+              </p>
+            </div>
+          </div>
+
+          <!-- Controles Táteis Grandes para Totem Touch (Subir/Descer) -->
+          <div class="flex items-center gap-2 w-full md:w-auto justify-end border-t md:border-t-0 pt-3 md:pt-0 border-white/10">
+            <button onclick="inspectFromGame(${stage.id})" class="px-3.5 py-3 rounded-xl bg-pampa-leather/70 hover:bg-pampa-leaf text-pampa-cream border border-pampa-gold/30 text-xs font-bold flex items-center gap-1.5 active:scale-95 transition" title="Ver detalhes mecânicos">
+              <span>👁️ Ver em Ação</span>
+            </button>
+            <div class="flex items-center gap-1.5">
+              <button onclick="moveStage(${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-20 cursor-not-allowed px-4 py-3 rounded-2xl bg-pampa-dark border border-white/10 text-white font-bold"' : 'class="px-5 py-3.5 rounded-2xl bg-pampa-gold/90 hover:bg-pampa-gold active:scale-90 text-pampa-dark font-extrabold shadow-md transition flex items-center gap-1"'} title="Mover para cima">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 15l7-7 7 7"/></svg>
+                <span class="text-xs font-sans uppercase">Subir</span>
+              </button>
+              <button onclick="moveStage(${idx}, 1)" ${idx === currentOrder.length - 1 ? 'disabled class="opacity-20 cursor-not-allowed px-4 py-3 rounded-2xl bg-pampa-dark border border-white/10 text-white font-bold"' : 'class="px-5 py-3.5 rounded-2xl bg-pampa-gold/90 hover:bg-pampa-gold active:scale-90 text-pampa-dark font-extrabold shadow-md transition flex items-center gap-1"'} title="Mover para baixo">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/></svg>
+                <span class="text-xs font-sans uppercase">Descer</span>
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    /* VERIFICAR RESPOSTA E APRESENTAR FEEDBACK */
+    function checkGameOrder() {
+      let correctCount = 0;
+      const statsContainer = document.getElementById('modalStats');
+      statsContainer.innerHTML = '';
+
+      currentOrder.forEach((stage, idx) => {
+        const isRight = stage.orderCorrect === (idx + 1);
+        if (isRight) correctCount++;
+
+        const dot = document.createElement('div');
+        dot.className = `p-2 rounded-xl flex flex-col items-center justify-center font-bold text-xs ${isRight ? 'bg-pampa-leaf text-white' : 'bg-pampa-wine text-white'}`;
+        dot.innerHTML = `
+          <span>${idx + 1}º</span>
+          <span>${isRight ? '✓' : '✕'}</span>
+        `;
+        statsContainer.appendChild(dot);
+      });
+
+      const modal = document.getElementById('feedbackModal');
+      const box = document.getElementById('modalBox');
+      const iconBox = document.getElementById('modalIconContainer');
+      const title = document.getElementById('modalTitle');
+      const msg = document.getElementById('modalMessage');
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+
+      setTimeout(() => {
+        box.classList.remove('scale-90');
+        box.classList.add('scale-100');
+      }, 20);
+
+      if (correctCount === 5) {
+        // VITÓRIA TOTAL
+        playWinFanfare();
+        title.innerText = "¡MATE DE PRIMEIRA!";
+        title.className = "text-3xl font-title font-extrabold text-pampa-gold";
+        msg.innerHTML = `Você dominou o ciclo completo dos ervais gaúchos!<br><span class="text-pampa-leafBright font-bold">1. Descarga ➔ 2. Sapeco ➔ 3. Barbacuá ➔ 4. Cancheamento ➔ 5. Soque</span>.<br>A cuia está cevada com louvor!`;
+        
+        // Ícone de Cuia fumegante de vitória
+        iconBox.innerHTML = `
+          <div class="relative animate-bounce">
+            <svg class="w-20 h-20 text-pampa-gold" viewBox="0 0 64 64" fill="currentColor">
+              <path d="M32 8 C16 8 16 48 32 58 C48 48 48 8 32 8 Z" fill="#4E342E"/>
+              <ellipse cx="32" cy="18" rx="14" ry="5" fill="#388E3C"/>
+              <line x1="32" y1="18" x2="48" y2="4" stroke="#D4AF37" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+          </div>
+        `;
+      } else {
+        // PRECISA DE AJUSTE
+        playErrorSound();
+        title.innerText = `Quase lá, Campeiro! (${correctCount} de 5)`;
+        title.className = "text-3xl font-title font-extrabold text-pampa-gold";
+        msg.innerHTML = `Você acertou <strong>${correctCount} etapa(s)</strong> na ordem certa.<br>Lembre-se: primeiro chega a folha verde, passa pelo fogo ligeiro, depois pelo calor da grelha, pelo corte das facas e termina nos soques do engenho!`;
+        
+        iconBox.innerHTML = `
+          <div class="w-16 h-16 rounded-full bg-pampa-wine/50 border-2 border-pampa-wine flex items-center justify-center text-4xl">
+            🤠
+          </div>
+        `;
+      }
+    }
+
+    function closeModal() {
+      playTapSound();
+      const modal = document.getElementById('feedbackModal');
+      const box = document.getElementById('modalBox');
+      box.classList.add('scale-90');
+      box.classList.remove('scale-100');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }, 150);
+    }
+
+    /* MODO EXPLORAÇÃO E MAQUINARIA EM FUNCIONAMENTO */
+    function initExploreNav() {
+      const nav = document.getElementById('exploreNavButtons');
+      nav.innerHTML = '';
+
+      MASTER_STAGES.forEach((stage, idx) => {
+        const btn = document.createElement('button');
+        btn.id = `exploreBtn_${idx}`;
+        btn.onclick = () => {
+          playTapSound();
+          renderExploreStage(idx);
+        };
+        btn.className = `p-3.5 rounded-2xl border text-center transition-all flex flex-col items-center gap-1 active:scale-95 ${
+          idx === currentExploreIndex
+            ? 'bg-pampa-gold text-pampa-dark font-extrabold border-pampa-gold shadow-lg glow-gold'
+            : 'bg-pampa-wood/80 hover:bg-pampa-wood text-pampa-cream border-pampa-gold/30'
+        }`;
+
+        btn.innerHTML = `
+          <span class="text-xs uppercase font-extrabold tracking-wider">Etapa ${idx + 1}</span>
+          <span class="text-sm font-title truncate max-w-full">${stage.name}</span>
+        `;
+        nav.appendChild(btn);
+      });
+    }
+
+    function renderExploreStage(index) {
+      currentExploreIndex = index;
+      const stage = MASTER_STAGES[index];
+
+      // Atualiza destaques nos botões de navegação
+      MASTER_STAGES.forEach((_, i) => {
+        const b = document.getElementById(`exploreBtn_${i}`);
+        if (b) {
+          if (i === index) {
+            b.className = "p-3.5 rounded-2xl border text-center transition-all flex flex-col items-center gap-1 active:scale-95 bg-pampa-gold text-pampa-dark font-extrabold border-pampa-gold shadow-lg glow-gold";
+          } else {
+            b.className = "p-3.5 rounded-2xl border text-center transition-all flex flex-col items-center gap-1 active:scale-95 bg-pampa-wood/80 hover:bg-pampa-wood text-pampa-cream border-pampa-gold/30";
+          }
+        }
+      });
+
+      // Atualiza dados informativos
+      document.getElementById('exploreBadge').innerText = `ETAPA ${stage.orderCorrect} DE 5`;
+      document.getElementById('exploreSubname').innerText = stage.subname;
+      document.getElementById('exploreTitle').innerText = stage.name;
+      document.getElementById('exploreDesc').innerText = stage.fullDesc;
+      document.getElementById('exploreFact').innerText = `"${stage.curiosity}"`;
+
+      // Atualiza ilustração e animação SVG viva
+      const animBox = document.getElementById('exploreAnimationContainer');
+      animBox.innerHTML = stage.svgRender();
+    }
+
+    function nextExploreStage() {
+      playTapSound();
+      currentExploreIndex = (currentExploreIndex + 1) % MASTER_STAGES.length;
+      renderExploreStage(currentExploreIndex);
+    }
+
+    function inspectFromGame(stageId) {
+      const idx = MASTER_STAGES.findIndex(s => s.id === stageId);
+      if (idx !== -1) {
+        switchTab('explore');
+        renderExploreStage(idx);
+      }
+    }
+
+    // Efeitos sonoros customizados para cada etapa no Totem
+    function playStageSoundEffect() {
+      const stage = MASTER_STAGES[currentExploreIndex];
+      initAudio();
+
+      if (stage.code === 'DESCARGA') {
+        // Som grave de madeira e galhos estalando
+        playTone(150, 'sine', 0.25, 0.3);
+        setTimeout(() => playTone(220, 'triangle', 0.3, 0.2), 120);
+      } else if (stage.code === 'SAPECO') {
+        // Fogo crepitando / estalo rápido
+        playTone(520, 'sawtooth', 0.08, 0.25);
+        setTimeout(() => playTone(680, 'sawtooth', 0.08, 0.2), 80);
+        setTimeout(() => playTone(440, 'triangle', 0.2, 0.3), 160);
+      } else if (stage.code === 'BARBACUA') {
+        // Som contínuo de calor e vento
+        playTone(280, 'sine', 0.5, 0.2);
+        setTimeout(() => playTone(350, 'sine', 0.4, 0.15), 150);
+      } else if (stage.code === 'CANCHEAMENTO') {
+        // Golpe de lâmina/corte
+        playTone(600, 'square', 0.08, 0.2);
+        setTimeout(() => playTone(300, 'square', 0.12, 0.25), 90);
+      } else if (stage.code === 'SOQUE') {
+        // Batida ritmada de pilão de madeira
+        playTone(95, 'triangle', 0.4, 0.4);
+        setTimeout(() => playTone(80, 'triangle', 0.35, 0.35), 350);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      shuffleOrder();
+      initExploreNav();
+      renderExploreStage(0);
+
+      // Desbloqueia contexto de áudio no primeiro toque em telas de totem
+      document.body.addEventListener('touchstart', function unlock() {
+        initAudio();
+        document.body.removeEventListener('touchstart', unlock);
+      }, { once: true });
+    });
+  </script>
+
+  <a class="ds-totem-action" href="index.html" data-home>Início</a>
+
+  <button class="ds-idle" type="button" data-idle-screen data-active="false" aria-label="Toque para começar a experiência">
+    <div>
+      <img src="logo.png" alt="" class="mx-auto mb-8 h-28 w-auto drop-shadow-lg" width="200" height="200" aria-hidden="true" />
+      <div class="ds-idle-pulse" aria-hidden="true"><span></span></div>
+      <p class="ds-display text-4xl md:text-5xl">Toque para começar</p>
+      <p class="mx-auto mt-4 max-w-md text-lg text-white/85">Memorial Regional da Erva Mate</p>
+      <p class="mt-1 text-base text-white/70">Marau, RS</p>
+    </div>
+  </button>
+
+  <style>
+    [data-mode="totem"] .totem-only { display: block !important; }
+    [data-mode="totem"] .web-only { display: none !important; }
+  </style>
+</body>
+</html>

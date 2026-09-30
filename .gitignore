@@ -1,0 +1,18 @@
+# Sistema
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Ambiente e segredos
+.env
+.env.*
+*.pem
+
+# Trabalho local
+tmp/
+.agents/
+.avideosOriginais/
+
+# Duplicatas e documentos internos
+logo - Copia.png
+orcamento-software-totem1.pdf
