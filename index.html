@@ -22,6 +22,7 @@
     </script>
     <link rel="stylesheet" href="tailwind.css" />
     <script src="app.js" defer></script>
+    <script src="src/js/home-video.js" defer></script>
   </head>
   <body class="ds-page" data-mode="web">
     <a class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 ds-button ds-button-primary" href="#conteudo">Ir para o conteúdo</a>
@@ -72,9 +73,14 @@
       </section>
 
       <section id="percursos" class="mx-auto max-w-7xl px-5 py-16 pb-24 md:px-8 md:py-24 md:pb-28">
-        <div class="ds-reveal max-w-2xl">
-          <h2 class="ds-display text-4xl md:text-5xl">Escolha um caminho.</h2>
-          <p class="ds-muted mt-4 text-lg leading-relaxed">História, território, planta, curiosidades e jogo.</p>
+        <div class="ds-reveal percursos-head">
+          <div class="max-w-2xl">
+            <h2 class="ds-display text-4xl md:text-5xl">Escolha um caminho.</h2>
+            <p class="ds-muted mt-4 text-lg leading-relaxed">História, território, planta, curiosidades e jogo.</p>
+          </div>
+          <button class="ds-button ds-button-gold ds-button-lg" type="button" data-video-open aria-haspopup="dialog">
+            Assistir vídeo
+          </button>
         </div>
 
         <div class="mt-10 grid gap-4 md:grid-cols-12">
@@ -88,7 +94,7 @@
             <span class="museum-route-bg" aria-hidden="true"></span>
             <span class="museum-route-label">Território</span>
             <h3>Mapa interativo</h3>
-            <p>16 pontos da propriedade Pagnussat, da chegada às trilhas.</p>
+            <p>15 pontos da propriedade Pagnussat, da chegada às trilhas.</p>
             <span class="museum-route-cta">Abrir</span>
           </a>
           <a class="museum-route museum-route-photo museum-route-botanica ds-reveal md:col-span-7" href="botanica.html" aria-label="Abrir a botânica da erva-mate">
@@ -128,6 +134,40 @@
     </main>
 
     <a class="ds-totem-action" href="index.html" data-home>Início</a>
+
+    <div
+      class="video-dialog"
+      data-video-dialog
+      data-active="false"
+      aria-hidden="true"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="video-dialog-title"
+    >
+      <div class="video-dialog-panel">
+        <div class="video-dialog-head">
+          <h2 id="video-dialog-title">Memorial Regional da Erva Mate</h2>
+          <button class="ds-button ds-button-gold" type="button" data-video-close>Fechar</button>
+        </div>
+        <div class="video-dialog-frame">
+          <div class="video-dialog-mount" data-video-mount></div>
+          <button
+            class="video-dialog-shield"
+            type="button"
+            data-video-toggle
+            data-state="paused"
+            aria-label="Reproduzir"
+          >
+            <span class="video-dialog-play-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="video-dialog-controls">
+          <button class="ds-button ds-button-gold ds-button-lg" type="button" data-video-control>
+            <span data-video-control-label>Reproduzir</span>
+          </button>
+        </div>
+      </div>
+    </div>
 
     <button class="ds-idle" type="button" data-idle-screen data-active="false" aria-label="Toque para começar a experiência">
       <div>

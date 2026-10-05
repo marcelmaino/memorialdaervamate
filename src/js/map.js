@@ -16,8 +16,7 @@
     { id: 'producao', label: 'Produção' },
     { id: 'lazer', label: 'Lazer' },
     { id: 'memoria', label: 'Memória' },
-    { id: 'natureza', label: 'Natureza' },
-    { id: 'familia', label: 'Família' }
+    { id: 'natureza', label: 'Natureza' }
   ];
 
   let activeId = data.points[0].id;

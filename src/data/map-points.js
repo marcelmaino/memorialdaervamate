@@ -1,12 +1,12 @@
 /**
  * Pontos oficiais do Mapa Interativo.
- * Planta da propriedade Erva-Mate Pagnussat / Memorial Regional da Erva-Mate.
- * x/y: posição percentual na planta esquemática (0-100).
+ * Foto aérea da propriedade Erva-Mate Pagnussat / Memorial Regional da Erva-Mate.
+ * x/y: posição percentual sobre public/images/rota.jpg (0-100).
  */
 window.MemorialMapData = {
   title: 'Mapa interativo',
-  subtitle: 'Toque em um ponto da planta para conhecer cada espaço da visita.',
-  imageAlt: 'Planta esquemática da propriedade Erva-Mate Pagnussat, São Luís da Mortandade, Marau/RS',
+  subtitle: 'Toque em um ponto da foto para conhecer cada espaço da visita.',
+  imageAlt: 'Vista aérea da propriedade Erva-Mate Pagnussat, São Luís da Mortandade, Marau/RS',
   points: [
     {
       id: 'acesso',
@@ -17,8 +17,8 @@ window.MemorialMapData = {
         'A Erva-Mate Pagnussat está localizada praticamente às margens da rodovia RS-324, no quilômetro 90, localidade de São Luís da Mortandade (interior de Marau/RS). Do centro de Passo Fundo/RS, a distância é de cerca de 28,5 km (38 minutos). Do centro de Marau/RS, o deslocamento é de aproximadamente 7,1 km (12 minutos).',
       group: 'producao',
       groupLabel: 'Chegada',
-      x: 10,
-      y: 62
+      x: 90,
+      y: 77
     },
     {
       id: 'varejo',
@@ -29,8 +29,8 @@ window.MemorialMapData = {
         'No espaço destinado ao varejo é comercializada a Erva-Mate Pagnussat em pacotes de 1kg e ainda produtos coloniais regionais (principalmente provenientes da Rota das Salamarias).',
       group: 'producao',
       groupLabel: 'Produção',
-      x: 22,
-      y: 48
+      x: 42,
+      y: 44
     },
     {
       id: 'descarga',
@@ -41,8 +41,8 @@ window.MemorialMapData = {
         'Há na propriedade erveiras nativas e outras que foram plantadas há 40 anos, mas 90% da matéria-prima vem da região. As variedades usadas pela Erva-Mate Pagnussat são: nativa e cambona 4. A primeira etapa da produção que acontece no local, portanto, é o recebimento dos galhos verdes logo após o processo de poda.',
       group: 'producao',
       groupLabel: 'Produção',
-      x: 32,
-      y: 62
+      x: 35,
+      y: 28
     },
     {
       id: 'sapeco',
@@ -53,8 +53,8 @@ window.MemorialMapData = {
         'Galhos e folhas são colocados na sapecadeira, que contém um tambor giratório, onde passam por uma secagem rápida em chama bem alta. Nesta etapa a umidade da matéria-prima é reduzida em cerca de 20%. O processo também é conhecido como tamboreamento e prepara os galhos e as folhas para a etapa seguinte.',
       group: 'producao',
       groupLabel: 'Produção',
-      x: 42,
-      y: 50
+      x: 29,
+      y: 29
     },
     {
       id: 'barbacua',
@@ -65,8 +65,8 @@ window.MemorialMapData = {
         'É no barbacuá que é feita a secagem completa. Folhas e galhos sapecados são colocados em cima de uma grade que recebe o calor do fogo gerado no conduto (forno de tijolos de barro). Em outras palavras: a erva-mate é defumada. É um processo lento, que dura 24 horas, e gera uma quebra de 60% no volume. O fogo é feito a partir de madeiras descartadas de indústrias locais.',
       group: 'producao',
       groupLabel: 'Produção',
-      x: 52,
-      y: 62
+      x: 23,
+      y: 30
     },
     {
       id: 'cancheada',
@@ -77,8 +77,8 @@ window.MemorialMapData = {
         'No cancheador, acontece a primeira tritura do produto, a chamada tritura grossa. Esta operação, no passado, era feita de forma manual com golpes de facões de madeira. No Memorial Regional da Erva-Mate você pode ver exemplares desses facões, feitos em madeira de angico, que por muitos anos foram utilizados pelo senhor Vitorino Pagnussat.',
       group: 'producao',
       groupLabel: 'Produção',
-      x: 62,
-      y: 50
+      x: 17,
+      y: 31
     },
     {
       id: 'soque',
@@ -89,8 +89,8 @@ window.MemorialMapData = {
         'A Erva-Mate Pagnussat faz atualmente apenas a moagem média padrão. São 30 minutos no soque, feito através de pilões movidos por motor elétrico. Também conhecida como moagem, essa etapa já foi feita na beira do rio utilizando pilão movido por roda d\'água. Para finalizar o processo, ocorrem o peneiramento e a embalagem.',
       group: 'producao',
       groupLabel: 'Produção',
-      x: 72,
-      y: 62
+      x: 19,
+      y: 35
     },
     {
       id: 'eventos',
@@ -101,8 +101,8 @@ window.MemorialMapData = {
         'O salão de festas principal, totalmente equipado e com arquitetura que valoriza o evento, tem capacidade para receber 120 pessoas. Há ainda outro ambiente coberto, ao ar livre, com churrasqueira, mesas e cadeiras.',
       group: 'lazer',
       groupLabel: 'Lazer',
-      x: 86,
-      y: 24
+      x: 50,
+      y: 28
     },
     {
       id: 'futebol',
@@ -112,8 +112,8 @@ window.MemorialMapData = {
       detail: '',
       group: 'lazer',
       groupLabel: 'Lazer',
-      x: 94,
-      y: 36
+      x: 80,
+      y: 55
     },
     {
       id: 'volei',
@@ -123,8 +123,8 @@ window.MemorialMapData = {
       detail: '',
       group: 'lazer',
       groupLabel: 'Lazer',
-      x: 86,
-      y: 46
+      x: 65,
+      y: 40
     },
     {
       id: 'parquinho',
@@ -134,20 +134,20 @@ window.MemorialMapData = {
       detail: '',
       group: 'lazer',
       groupLabel: 'Lazer',
-      x: 94,
-      y: 56
+      x: 36,
+      y: 37
     },
     {
       id: 'acervo',
       number: 12,
-      name: 'Acervo Rosa e Vitorino Pagnussat',
+      name: 'Espaço de memória',
       short: 'Raízes familiares preservadas.',
       detail:
         'Espaço que registra a tradição da Família Pagnussat na produção artesanal da erva-mate. Uma tradição cultivada há gerações que é contada através de objetos cheios de significado selecionados com muito afeto.',
       group: 'memoria',
       groupLabel: 'Memória',
-      x: 74,
-      y: 80
+      x: 22,
+      y: 39
     },
     {
       id: 'ludica',
@@ -158,8 +158,8 @@ window.MemorialMapData = {
         'Ambiente criado para simular, de forma interativa, prática e divertida, o processo de produção artesanal da Erva-Mate Pagnussat. Não importa a idade. Qualquer pessoa pode vivenciar essa experiência.',
       group: 'memoria',
       groupLabel: 'Memória',
-      x: 58,
-      y: 84
+      x: 25,
+      y: 44
     },
     {
       id: 'trilha-arroio',
@@ -170,8 +170,8 @@ window.MemorialMapData = {
         'O visitante percorre a pé 665 metros, passando por mata nativa com erveiras, araucárias e outras dezenas de espécies. Contempla uma pequena gruta e duas nascentes. Há ainda vestígios de 11 casas subterrâneas que eram as moradias de indígenas que habitavam a região.',
       group: 'natureza',
       groupLabel: 'Natureza',
-      x: 18,
-      y: 18
+      x: 12,
+      y: 44
     },
     {
       id: 'trilha-carretao',
@@ -182,19 +182,8 @@ window.MemorialMapData = {
         'O visitante percorre cerca de 800 metros, utilizando esse peculiar meio de transporte (carretão puxado por trator) que, por si só, já torna o passeio interessante. No caminho avistam-se araucárias e árvores de pitanga, uvaia, guavirova, angico, cabriúva, guajuvira. Destaque para uma árvore canjerana com tronco de 2 metros. Com sorte, também poderá ver pássaros e outros animais como jacus, cutias, veados.',
       group: 'natureza',
       groupLabel: 'Natureza',
-      x: 38,
-      y: 22
-    },
-    {
-      id: 'residencia',
-      number: 16,
-      name: 'Residência da Família',
-      short: 'Residência do casal Regicelene e Adelar Pagnussat.',
-      detail: '',
-      group: 'familia',
-      groupLabel: 'Família',
-      x: 22,
-      y: 84
+      x: 33,
+      y: 24
     }
   ]
 };

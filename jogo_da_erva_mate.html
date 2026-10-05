@@ -125,17 +125,31 @@
       animation: leafSway 3s infinite ease-in-out;
     }
 
-    /* Scrollbars customizadas para telas touch */
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: #b4892e rgb(28 18 12 / 0.55);
+    }
     ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
     }
     ::-webkit-scrollbar-track {
-      background: rgba(0,0,0,0.2);
+      background: rgb(28 18 12 / 0.55);
+      border-radius: 999px;
     }
     ::-webkit-scrollbar-thumb {
-      background: #c37d2a;
-      border-radius: 4px;
+      background-color: #b4892e;
+      background-clip: padding-box;
+      border: 2px solid transparent;
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #e5a93b;
+      background-clip: padding-box;
+      border: 2px solid transparent;
+    }
+    ::-webkit-scrollbar-corner {
+      background: transparent;
     }
   </style>
 </head>
