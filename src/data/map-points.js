@@ -140,7 +140,7 @@ window.MemorialMapData = {
     {
       id: 'acervo',
       number: 12,
-      name: 'Espaço de memória',
+      name: 'Espaço de Memória',
       short: 'Raízes familiares preservadas.',
       detail:
         'Espaço que registra a tradição da Família Pagnussat na produção artesanal da erva-mate. Uma tradição cultivada há gerações que é contada através de objetos cheios de significado selecionados com muito afeto.',
