@@ -269,10 +269,6 @@
           </div>
 
           <div class="flex items-center gap-4 pt-2">
-            <button onclick="playStageSoundEffect()" class="px-6 py-4 rounded-2xl bg-pampa-leather hover:bg-pampa-gold hover:text-pampa-dark text-pampa-cream border border-pampa-gold/50 font-bold flex items-center gap-3 active:scale-95 transition shadow-lg">
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>
-              <span>Ouvir o Som da Etapa</span>
-            </button>
             <button onclick="nextExploreStage()" class="px-6 py-4 rounded-2xl bg-pampa-wood hover:bg-pampa-bronze hover:text-pampa-dark text-pampa-cream font-bold border border-pampa-gold/40 flex items-center gap-2 active:scale-95 transition">
               <span>Próxima Etapa</span>
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
@@ -754,35 +750,6 @@
       if (idx !== -1) {
         switchTab('explore');
         renderExploreStage(idx);
-      }
-    }
-
-    // Efeitos sonoros customizados para cada etapa no Totem
-    function playStageSoundEffect() {
-      const stage = MASTER_STAGES[currentExploreIndex];
-      initAudio();
-
-      if (stage.code === 'DESCARGA') {
-        // Som grave de madeira e galhos estalando
-        playTone(150, 'sine', 0.25, 0.3);
-        setTimeout(() => playTone(220, 'triangle', 0.3, 0.2), 120);
-      } else if (stage.code === 'SAPECO') {
-        // Fogo crepitando / estalo rápido
-        playTone(520, 'sawtooth', 0.08, 0.25);
-        setTimeout(() => playTone(680, 'sawtooth', 0.08, 0.2), 80);
-        setTimeout(() => playTone(440, 'triangle', 0.2, 0.3), 160);
-      } else if (stage.code === 'BARBACUA') {
-        // Som contínuo de calor e vento
-        playTone(280, 'sine', 0.5, 0.2);
-        setTimeout(() => playTone(350, 'sine', 0.4, 0.15), 150);
-      } else if (stage.code === 'CANCHEAMENTO') {
-        // Golpe de lâmina/corte
-        playTone(600, 'square', 0.08, 0.2);
-        setTimeout(() => playTone(300, 'square', 0.12, 0.25), 90);
-      } else if (stage.code === 'SOQUE') {
-        // Batida ritmada de pilão de madeira
-        playTone(95, 'triangle', 0.4, 0.4);
-        setTimeout(() => playTone(80, 'triangle', 0.35, 0.35), 350);
       }
     }
 

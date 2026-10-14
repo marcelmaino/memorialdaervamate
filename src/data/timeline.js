@@ -225,17 +225,17 @@ window.MemorialTimelineData = {
         },
         {
           id: 'd3-e2',
-          year: 'Ano 1916',
+          year: 'Cinco gerações',
           title: 'A Erva-Mate Pagnussat',
           summary: 'Um modo de fazer artesanal que passa de geração em geração.',
           body: [
             {
               type: 'p',
-              text: 'A Família Pagnussat produz erva-mate de modo artesanal desde 1916. São cinco gerações conduzindo pessoalmente, até hoje, cada etapa: do sapeco na chama, às vinte e quatro horas de fogo lento no barbaquá e o soque no pilão. Um modo de fazer lento e manual, que resiste à padronização industrial e mantém vivo o saber transmitido de geração em geração.'
+              text: 'A Família Pagnussat produz erva-mate de modo artesanal. São cinco gerações conduzindo pessoalmente, até hoje, cada etapa: do sapeco na chama, às vinte e quatro horas de fogo lento no barbaquá e o soque no pilão. Um modo de fazer lento e manual, que resiste à padronização industrial e mantém vivo o saber transmitido de geração em geração.'
             },
             {
               type: 'p',
-              text: 'Na Erva-Mate Pagnussat, são cinco gerações na mesma lida. Tudo começou com Fioravante Poletto, que em 1916 passou a fazer erva-mate para vender, em São Paulo da Cruz. Dele o ofício passou à filha, Virgínia Poletto Pagnussat, casada com Fiorindo José Pagnussat, e depois ao filho do casal, Vitorino Celso Pagnussat, que passou a comercializar.'
+              text: 'Na Erva-Mate Pagnussat, são cinco gerações na mesma lida. Tudo começou com Fioravante Poletto, que passou a fazer erva-mate para vender, em São Paulo da Cruz. Dele o ofício passou à filha, Virgínia Poletto Pagnussat, casada com Fiorindo José Pagnussat, e depois ao filho do casal, Vitorino Celso Pagnussat, que passou a comercializar.'
             },
             {
               type: 'p',
@@ -257,11 +257,6 @@ window.MemorialTimelineData = {
                 {
                   src: 'public/images/linha_do_tempo_destaque03_imagem02_produto_final.jpg',
                   caption: 'Produto final: Erva-mate Pagnussat embalada',
-                  credit: 'Acervo da Família Pagnussat'
-                },
-                {
-                  src: 'public/images/linha_do_tempo_destaque03_imagem03_vitorino_pagnussat_sapeco.jpg',
-                  caption: 'Vitorino Pagnussat no processo de sapeco',
                   credit: 'Acervo da Família Pagnussat'
                 },
                 {
